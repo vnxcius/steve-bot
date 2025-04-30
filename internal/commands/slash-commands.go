@@ -172,11 +172,11 @@ var (
 			var apiEndpoint string
 			switch subCommand.Name {
 			case "start":
-				apiEndpoint = "/api/v1/start"
+				apiEndpoint = "/api/v2/start"
 			case "stop":
-				apiEndpoint = "/api/v1/stop"
+				apiEndpoint = "/api/v2/stop"
 			case "restart":
-				apiEndpoint = "/api/v1/restart"
+				apiEndpoint = "/api/v2/restart"
 			default:
 				sendEphemeralResponse(s, i, fmt.Sprintf("❌ Subcomando desconhecido: %s", subCommand.Name))
 				return
