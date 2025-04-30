@@ -5,47 +5,20 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/vnxcius/sss-backend/internal/config"
-	"github.com/vnxcius/sss-backend/internal/integrations/discord/helpers"
-	"github.com/vnxcius/sss-backend/internal/integrations/discord/server"
+	"github.com/vnxcius/steve-bot/helpers"
+	"github.com/vnxcius/steve-bot/internal/config"
+	"github.com/vnxcius/steve-bot/internal/server"
 )
 
 var (
-	authorizedUserIDs  map[string]bool
+	AuthorizedUserIDs  map[string]bool
 	registeredCommands []*discordgo.ApplicationCommand
 )
-
-func init() {
-	authorizedUserIDs = make(map[string]bool)
-
-	cfg := config.GetConfig()
-	if cfg == nil || cfg.AuthorizedUserIDs == "" {
-		fmt.Println("Warning: AuthorizedUserIDs not found in config or is empty. No users will be authorized for protected commands.")
-		return
-	}
-
-	idSlice := strings.Split(cfg.AuthorizedUserIDs, ",")
-
-	loadedCount := 0
-	// Correctly iterate over the SLICE VALUES
-	for _, idStr := range idSlice {
-		trimmedID := strings.TrimSpace(idStr)
-		if trimmedID != "" {
-			authorizedUserIDs[trimmedID] = true
-			loadedCount++
-		}
-	}
-
-	if loadedCount > 0 {
-		fmt.Printf("Successfully loaded %d authorized Discord User ID(s) from config.\n", loadedCount)
-	} else {
-		fmt.Println("Warning: Config AuthorizedUserIDs was set but contained no valid IDs after parsing.")
-	}
-}
 
 var (
 	commands = []*discordgo.ApplicationCommand{
@@ -194,9 +167,7 @@ var (
 			}
 			subCommand := options[0]
 
-			cfg := config.GetConfig()
-			apiBaseURL := cfg.APIUrl
-			accessToken := cfg.Token
+			apiBaseURL := os.Getenv("API_URL")
 
 			var apiEndpoint string
 			switch subCommand.Name {
@@ -228,6 +199,7 @@ var (
 				editEphemeralResponse(s, i, fmt.Sprintf("`❌ Erro Interno: Falha ao criar requisição para API: %v`", err))
 				return
 			}
+			accessToken := os.Getenv("ACCESS_TOKEN")
 			req.Header.Set("Authorization", "Bearer "+accessToken)
 
 			client := &http.Client{}
@@ -260,7 +232,7 @@ var (
 )
 
 func isUserAuthorized(userID string) bool {
-	_, authorized := authorizedUserIDs[userID]
+	_, authorized := AuthorizedUserIDs[userID]
 	return authorized
 }
 

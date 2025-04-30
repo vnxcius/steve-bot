@@ -3,12 +3,13 @@ package commands
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/vnxcius/sss-backend/internal/config"
-	"github.com/vnxcius/sss-backend/internal/integrations/discord/helpers"
-	"github.com/vnxcius/sss-backend/internal/integrations/discord/server"
+	"github.com/vnxcius/steve-bot/helpers"
+	"github.com/vnxcius/steve-bot/internal/config"
+	"github.com/vnxcius/steve-bot/internal/server"
 )
 
 type commandHandler func(s *discordgo.Session, e *discordgo.MessageCreate, args []string)
@@ -67,7 +68,7 @@ func ChatCommands(s *discordgo.Session, e *discordgo.MessageCreate) {
 		return
 	}
 
-	prefix := config.GetConfig().BotPrefix
+	prefix := os.Getenv("COMMAND_PREFIX")
 	if !strings.HasPrefix(e.Content, prefix) {
 		return
 	}

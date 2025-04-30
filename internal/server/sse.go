@@ -4,15 +4,16 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/vnxcius/sss-backend/internal/config"
-	"github.com/vnxcius/sss-backend/internal/integrations/discord/helpers"
+	"github.com/vnxcius/steve-bot/helpers"
+	"github.com/vnxcius/steve-bot/internal/config"
 )
 
 type sseMessage struct {
@@ -50,13 +51,13 @@ func establishSSEConnection(url string) (*http.Response, error) {
 
 func processSSEStream(s *discordgo.Session, resp *http.Response) {
 	defer resp.Body.Close()
-	log.Println("SSE connection established successfully.")
+	slog.Info("SSE connection established successfully.")
 	reader := bufio.NewReader(resp.Body)
 
 	for {
 		line, err := reader.ReadString('\n')
 		if err != nil {
-			log.Printf("Error reading from SSE stream (connection closed?): %v", err)
+			slog.Error("Error reading from SSE stream", "error", err)
 			handleStatusUpdate(s, "LOST CONNECTION")
 			return
 		}
@@ -71,14 +72,14 @@ func processSSEStream(s *discordgo.Session, resp *http.Response) {
 			jsonData = strings.TrimSpace(jsonData)
 
 			if jsonData == "" {
-				log.Println("Received empty data line from SSE.")
+				slog.Info("Received empty data line from SSE.")
 				continue
 			}
 
 			var msg sseMessage
 			err := json.Unmarshal([]byte(jsonData), &msg)
 			if err != nil {
-				log.Printf("Failed to decode SSE JSON: %v. Raw Data: '%s'", err, jsonData)
+				slog.Error("Failed to decode SSE JSON", "error", err, "data", jsonData)
 				continue
 			}
 
@@ -89,27 +90,28 @@ func processSSEStream(s *discordgo.Session, resp *http.Response) {
 
 func ConnectToSSE(s *discordgo.Session) {
 	if s == nil {
-		log.Println("CRITICAL ERROR: ConnectToSSE started with a nil Discord session. Aborting SSE connection.")
+		slog.Error("CRITICAL ERROR: ConnectToSSE started with a nil Discord session. Aborting SSE connection.")
 		return
 	}
 
-	cfg := config.GetConfig()
-	sseURL := cfg.APIUrl + "/v1/sse"
-	notificationChannelID = cfg.NotificationChannelID
-	log.Println("Notification channel ID:", notificationChannelID)
+	sseURL := os.Getenv("API_URL") + "/v2/server-status-stream"
+	notificationChannelID = os.Getenv("NOTIFICATION_CHANNEL_ID")
+	slog.Info("Notification channel ID: " + notificationChannelID)
 
 	const initialRetryDelay = 10 * time.Second
 	const maxRetryDelay = 1 * time.Hour // Cap delay at 1 hour
 	const delayAfterLoss = 30 * time.Second
 	currentRetryDelay := initialRetryDelay
 
-	log.Printf("Attempting to connect to SSE endpoint: %s", sseURL)
+	slog.Info("Attempting to connect to SSE endpoint", "url", sseURL)
 	for {
 		resp, err := establishSSEConnection(sseURL)
 		if err != nil {
-			log.Printf(
-				"SSE connection attempt failed: %v. Retrying in %v...",
+			slog.Error(
+				"SSE connection attempt failed. Retrying...",
+				"error",
 				err,
+				"delay",
 				currentRetryDelay,
 			)
 			time.Sleep(currentRetryDelay)
@@ -123,8 +125,9 @@ func ConnectToSSE(s *discordgo.Session) {
 		currentRetryDelay = initialRetryDelay
 		processSSEStream(s, resp)
 
-		log.Printf(
-			"SSE connection lost. Waiting %v before reconnecting...",
+		slog.Warn(
+			"SSE connection lost. Waiting before reconnecting...",
+			"delay",
 			delayAfterLoss,
 		)
 		time.Sleep(delayAfterLoss)
@@ -133,7 +136,7 @@ func ConnectToSSE(s *discordgo.Session) {
 
 func handleStatusUpdate(s *discordgo.Session, newStatus string) {
 	if s == nil {
-		log.Println("CRITICAL ERROR: ConnectToSSE started with a nil Discord session. Aborting SSE connection.")
+		slog.Error("CRITICAL ERROR: ConnectToSSE started with a nil Discord session. Aborting SSE connection.")
 		return
 	}
 	statusMutex.Lock()
@@ -143,7 +146,7 @@ func handleStatusUpdate(s *discordgo.Session, newStatus string) {
 	if oldStatus != newStatus {
 		currentServerStatus = newStatus
 		timestamp := helpers.GetTimeNow()
-		log.Printf("Server status updated: %s -> %s", oldStatus, newStatus)
+		slog.Info("Server status updated", "old", oldStatus, "new", newStatus)
 
 		emoji := helpers.GetStatusEmoji(newStatus)
 
@@ -155,7 +158,7 @@ func handleStatusUpdate(s *discordgo.Session, newStatus string) {
 			)
 			_, err := s.ChannelMessageSend(notificationChannelID, message)
 			if err != nil {
-				log.Printf("Failed to send SSE notification to channel: %v", err)
+				slog.Error("Failed to send SSE notification to channel", "error", err)
 			}
 		}
 	}
