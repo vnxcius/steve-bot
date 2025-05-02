@@ -1,10 +1,11 @@
-import { ButtonInteraction, Client, Interaction } from "discord.js";
+import {
+  ButtonInteraction,
+  Client,
+  Interaction,
+  MessageFlags,
+} from "discord.js";
 import getLocalCommands from "../../utils/getLocalCommands";
-import * as configJson from "../../../config.json";
-import { Config } from "../../types";
-
-const config = configJson as Config;
-const { devs } = config;
+import "dotenv/config";
 
 export default async function handleCommands(
   client: Client,
@@ -20,10 +21,12 @@ export default async function handleCommands(
 
       if (!command) return;
       if (command.devOnly) {
-        if (!devs.includes(interaction.user.id)) {
+        const authorizedIds = process.env.AUTHORIZED_USER_IDS?.split(",");
+        if (!authorizedIds) return;
+        if (!authorizedIds.includes(interaction.user.id)) {
           return interaction.reply({
             content: "Você não tem permissão para usar este comando.",
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
         }
       }
@@ -33,7 +36,7 @@ export default async function handleCommands(
           if (!interaction.memberPermissions?.has(permission)) {
             return interaction.reply({
               content: "Você não tem permissão para usar este comando.",
-              ephemeral: true,
+              flags: MessageFlags.Ephemeral,
             });
           }
         }
@@ -45,7 +48,7 @@ export default async function handleCommands(
           if (!bot?.permissions.has(permission)) {
             return interaction.reply({
               content: "Eu não tenho permissão para usar este comando.",
-              ephemeral: true,
+              flags: MessageFlags.Ephemeral,
             });
           }
         }
