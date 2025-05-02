@@ -1,5 +1,5 @@
 import { ApplicationCommand } from "discord.js";
-import { Command } from "../types";
+import { Command } from "@/types";
 
 //TODO: TYPE SSAFE CHOICES
 export default function areCommandsDifferent(

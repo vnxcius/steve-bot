@@ -1,9 +1,9 @@
 import { Client, ApplicationCommand } from "discord.js";
 import "dotenv/config";
-import getLocalCommands from "../../utils/getLocalCommands";
-import getApplicationCommands from "../../utils/getApplicationCommands";
-import areCommandsDifferent from "../../utils/areCommandsDifferent";
-import deleteAllCommands from "../../utils/deleteAllCommands";
+import getLocalCommands from "@/utils/getLocalCommands";
+import getApplicationCommands from "@/utils/getApplicationCommands";
+import areCommandsDifferent from "@/utils/areCommandsDifferent";
+import deleteAllCommands from "@/utils/deleteAllCommands";
 
 export default async function registerCommands(client: Client) {
   await deleteAllCommands();

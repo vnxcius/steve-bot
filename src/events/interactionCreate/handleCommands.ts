@@ -4,7 +4,7 @@ import {
   Interaction,
   MessageFlags,
 } from "discord.js";
-import getLocalCommands from "../../utils/getLocalCommands";
+import getLocalCommands from "@/utils/getLocalCommands";
 import "dotenv/config";
 
 export default async function handleCommands(

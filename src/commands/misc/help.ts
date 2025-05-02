@@ -4,8 +4,8 @@ import {
   EmbedBuilder,
   MessageFlags,
 } from "discord.js";
-import { Command } from "../../types";
-import getLocalCommands from "../../utils/getLocalCommands";
+import { Command } from "@/types";
+import getLocalCommands from "@/utils/getLocalCommands";
 
 export default function help(): Command {
   return {

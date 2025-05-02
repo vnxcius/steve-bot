@@ -1,7 +1,7 @@
 import * as path from "path";
 import getFiles from "./getFiles";
 import { fileURLToPath, pathToFileURL } from "url";
-import { Command } from "../types";
+import { Command } from "@/types";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

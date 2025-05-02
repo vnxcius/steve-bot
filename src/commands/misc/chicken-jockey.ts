@@ -12,7 +12,7 @@ import {
   joinVoiceChannel,
   VoiceConnectionStatus,
 } from "@discordjs/voice";
-import { Command } from "../../types";
+import { Command } from "@/types";
 import * as path from "path";
 import { fileURLToPath } from "url";
 

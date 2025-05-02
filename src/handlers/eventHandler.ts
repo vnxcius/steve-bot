@@ -1,5 +1,5 @@
 import type { Client } from "discord.js";
-import getFiles from "../utils/getFiles.js";
+import getFiles from "@/utils/getFiles";
 import * as path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 
