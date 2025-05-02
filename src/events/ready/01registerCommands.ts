@@ -3,8 +3,10 @@ import "dotenv/config";
 import getLocalCommands from "../../utils/getLocalCommands";
 import getApplicationCommands from "../../utils/getApplicationCommands";
 import areCommandsDifferent from "../../utils/areCommandsDifferent";
+import deleteAllCommands from "../../utils/deleteAllCommands";
 
 export default async function registerCommands(client: Client) {
+  await deleteAllCommands();
   try {
     const localCommands = await getLocalCommands();
     const applicationCommands = await getApplicationCommands(
@@ -51,12 +53,6 @@ export default async function registerCommands(client: Client) {
   }
 }
 
-// Commands name should be lowercase and no spaces
-// const commands = [
-//   {
-//     name: "ping",
-//     description: "Replies with pong!",
-//   },
 //   {
 //     name: "server-info",
 //     description: "Get server info",
@@ -78,47 +74,4 @@ export default async function registerCommands(client: Client) {
 //       },
 //     ],
 //   },
-//   {
-//     name: "add",
-//     description: "Add two numbers",
-//     options: [
-//       {
-//         name: "first",
-//         description: "The first number",
-//         type: ApplicationCommandOptionType.Number,
-//         choices: [
-//           {
-//             name: "one",
-//             value: 1,
-//           },
-//         ],
-//         required: true,
-//       },
-//       {
-//         name: "second",
-//         description: "The second number",
-//         type: ApplicationCommandOptionType.Number,
-//         required: true,
-//       },
-//     ],
-//   },
 // ];
-
-// const rest = new REST({ version: "10" }).setToken(process.env.BOT_TOKEN);
-
-// (async () => {
-//   try {
-//     console.log("Started refreshing application (/) commands.");
-//     await rest.put(
-//       Routes.applicationGuildCommands(
-//         process.env.CLIENT_ID,
-//         process.env.GUILD_ID,
-//       ),
-//       { body: commands },
-//     );
-
-//     console.log("Successfully reloaded application (/) commands.");
-//   } catch (error) {
-//     console.log("Error: ", error);
-//   }
-// })();
