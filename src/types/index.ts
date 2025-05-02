@@ -15,9 +15,3 @@ export interface Command {
   botPermissions?: PermissionResolvable[];
   callback: (client: Client, interaction: CommandInteraction) => void;
 }
-
-export interface Config {
-  testGuildId: string;
-  clientId: string;
-  devs: string[];
-}
