@@ -12,17 +12,19 @@ export default function ping(): Command {
     name: "ping",
     description: "Replies with poing!",
     deleted: false,
-    callback: (client: Client, interaction: CommandInteraction) => {
+    callback: async (client: Client, interaction: CommandInteraction) => {
+      await interaction.deferReply();
       const button = new ButtonBuilder()
         .setCustomId("delete_message")
         .setLabel("Delete")
         .setStyle(ButtonStyle.Danger);
       const row = new ActionRowBuilder().addComponents(button);
 
-      interaction.reply({
-        content: `Pong! ${client.ws.ping}ms`,
+      const reply = await interaction.fetchReply();
+      const ping = reply.createdTimestamp - interaction.createdTimestamp;
+      interaction.editReply({
+        content: `Pong! Client: ${ping}ms | Websocket: ${client.ws.ping}ms`,
         components: [row.toJSON()],
-        withResponse: true,
       });
     },
   };
