@@ -1,8 +1,15 @@
-export default function areCommandsDifferent(existingCommand, localCommand) {
-  const areChoicesDifferent = (existingChoices, localChoices) => {
+import { ApplicationCommand } from "discord.js";
+import { Command } from "../types";
+
+//TODO: TYPE SSAFE CHOICES
+export default function areCommandsDifferent(
+  existingCommand: ApplicationCommand,
+  localCommand: Command,
+): boolean {
+  const areChoicesDifferent = (existingChoices: any, localChoices: any) => {
     for (const localChoice of localChoices) {
       const existingChoice = existingChoices?.find(
-        (choice) => choice.name === localChoice.name,
+        (choice: any) => choice.name === localChoice.name,
       );
 
       if (!existingChoice) return true;
@@ -14,10 +21,10 @@ export default function areCommandsDifferent(existingCommand, localCommand) {
     return false;
   };
 
-  const areOptionsDifferent = (existingOptions, localOptions) => {
+  const areOptionsDifferent = (existingOptions: any, localOptions: any) => {
     for (const localOption of localOptions) {
       const existingOption = existingOptions?.find(
-        (option) => option.name === localOption.name,
+        (option: any) => option.name === localOption.name,
       );
 
       if (!existingOption) return true;
