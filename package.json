@@ -1,0 +1,40 @@
+{
+  "name": "steve-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vnxcius/steve-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/vnxcius/steve-bot/issues"
+  },
+  "homepage": "https://github.com/vnxcius/steve-bot#readme",
+  "dependencies": {
+    "@discordjs/voice": "^0.18.0",
+    "chalk": "^5.4.1",
+    "dayjs": "^1.11.13",
+    "discord.js": "^14.19.2",
+    "dotenv": "^16.5.0",
+    "eventsource": "^3.0.6",
+    "fs-extra": "^11.3.0",
+    "prettier": "^3.5.3",
+    "undici": "^7.8.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.15.3",
+    "tsx": "^4.19.4"
+  }
+}
