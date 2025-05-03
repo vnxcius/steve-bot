@@ -1,6 +1,6 @@
 import {
   Client,
-  CommandInteraction,
+  ChatInputCommandInteraction,
   GuildMember,
   VoiceChannel,
 } from "discord.js";
@@ -19,12 +19,15 @@ import * as path from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export default function theNether(): Command {
+export default function elytra(): Command {
   return {
     name: "elitros",
     description: "QUE TAL ESSES ÉLITROS?!",
     deleted: false,
-    callback: async (client: Client, interaction: CommandInteraction) => {
+    callback: async (
+      client: Client,
+      interaction: ChatInputCommandInteraction,
+    ) => {
       await interaction.reply("QUE TAL ESSES ÉLITROS❓❓🪽🪽🪽🗣️🗣️💯💯🔥🙏");
 
       const voiceChannel = (interaction.member as GuildMember).voice

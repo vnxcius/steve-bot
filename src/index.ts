@@ -6,6 +6,7 @@ const client = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
     IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.MessageContent,
     IntentsBitField.Flags.GuildMembers,
     IntentsBitField.Flags.GuildVoiceStates,
   ],

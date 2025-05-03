@@ -1,6 +1,6 @@
 import {
   Client,
-  CommandInteraction,
+  ChatInputCommandInteraction,
   EmbedBuilder,
   MessageFlags,
 } from "discord.js";
@@ -12,7 +12,10 @@ export default function help(): Command {
     name: "help",
     description: "Lists all available commands",
     deleted: false,
-    callback: async (client: Client, interaction: CommandInteraction) => {
+    callback: async (
+      client: Client,
+      interaction: ChatInputCommandInteraction,
+    ) => {
       try {
         const commands = await getLocalCommands();
         const embed = new EmbedBuilder()

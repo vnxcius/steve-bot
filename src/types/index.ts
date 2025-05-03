@@ -1,7 +1,7 @@
 import {
   ApplicationCommandOptionData,
+  ChatInputCommandInteraction,
   Client,
-  CommandInteraction,
   PermissionResolvable,
 } from "discord.js";
 
@@ -13,5 +13,12 @@ export interface Command {
   options?: ApplicationCommandOptionData[];
   permissionsRequired?: PermissionResolvable[];
   botPermissions?: PermissionResolvable[];
-  callback: (client: Client, interaction: CommandInteraction) => void;
+  callback: (client: Client, interaction: ChatInputCommandInteraction) => void;
 }
+
+export type ServerStatus =
+  | "online"
+  | "offline"
+  | "starting"
+  | "stopping"
+  | "restarting";

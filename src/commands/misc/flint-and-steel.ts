@@ -1,6 +1,6 @@
 import {
   Client,
-  CommandInteraction,
+  ChatInputCommandInteraction,
   GuildMember,
   VoiceChannel,
 } from "discord.js";
@@ -24,7 +24,10 @@ export default function flintAndSteel(): Command {
     name: "pedra-e-aco",
     description: "PEDRA E AÇO!",
     deleted: false,
-    callback: async (client: Client, interaction: CommandInteraction) => {
+    callback: async (
+      client: Client,
+      interaction: ChatInputCommandInteraction,
+    ) => {
       await interaction.reply("PEDRA E AÇO 🗣️🗣️🪨🪨🪨💯💯🔥🙏🔥🙏");
 
       const voiceChannel = (interaction.member as GuildMember).voice

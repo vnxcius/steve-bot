@@ -3,16 +3,19 @@ import {
   ButtonBuilder,
   ButtonStyle,
   Client,
-  CommandInteraction,
+  ChatInputCommandInteraction,
 } from "discord.js";
 import { Command } from "@/types";
 
 export default function ping(): Command {
   return {
     name: "ping",
-    description: "Replies with poing!",
+    description: "Replies with pong!",
     deleted: false,
-    callback: async (client: Client, interaction: CommandInteraction) => {
+    callback: async (
+      client: Client,
+      interaction: ChatInputCommandInteraction,
+    ) => {
       await interaction.deferReply();
       const button = new ButtonBuilder()
         .setCustomId("delete_message")

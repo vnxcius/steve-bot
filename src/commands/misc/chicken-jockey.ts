@@ -1,6 +1,6 @@
 import {
   Client,
-  CommandInteraction,
+  ChatInputCommandInteraction,
   GuildMember,
   VoiceChannel,
 } from "discord.js";
@@ -24,7 +24,10 @@ export default function chickenJockey(): Command {
     name: "jockey-de-galinha",
     description: "JOCKEY DE GALINHA!",
     deleted: false,
-    callback: async (client: Client, interaction: CommandInteraction) => {
+    callback: async (
+      client: Client,
+      interaction: ChatInputCommandInteraction,
+    ) => {
       await interaction.reply("JOCKEY DE GALINHA 🐔🐔💯🗣️🗣️💯🔥🙏🗣️🙏");
 
       const voiceChannel = (interaction.member as GuildMember).voice

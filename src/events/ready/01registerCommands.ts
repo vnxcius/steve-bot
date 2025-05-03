@@ -52,26 +52,3 @@ export default async function registerCommands(client: Client) {
     console.log("Error: ", error);
   }
 }
-
-//   {
-//     name: "server-info",
-//     description: "Get server info",
-
-//   },
-//   {
-//     name: "server",
-//     description: "Control minecraft server state",
-//     options: [
-//       {
-//         name: "start",
-//         description: "Start the server",
-//         type: ApplicationCommandOptionType.Subcommand,
-//       },
-//       {
-//         name: "stop",
-//         description: "Stop the server",
-//         type: ApplicationCommandOptionType.Subcommand,
-//       },
-//     ],
-//   },
-// ];
