@@ -65,7 +65,7 @@ export default function chickenJockey(): Command {
         }
       }
 
-      await interaction.editReply("EEEU.... SOU STEVE 🔥🔥🗣️🔥🙏🗣️🙏");
+      await interaction.followUp("EEEU.... SOU STEVE 🔥🔥🗣️🔥🙏🗣️🙏");
     },
   };
 }

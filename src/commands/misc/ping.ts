@@ -25,7 +25,7 @@ export default function ping(): Command {
 
       const reply = await interaction.fetchReply();
       const ping = reply.createdTimestamp - interaction.createdTimestamp;
-      interaction.editReply({
+      interaction.followUp({
         content: `Pong! Client: ${ping}ms | Websocket: ${client.ws.ping}ms`,
         components: [row.toJSON()],
       });

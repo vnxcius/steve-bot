@@ -29,7 +29,7 @@ export default async function handleCommands(client: Client, message: Message) {
           return;
         }
 
-        logger.Info("Got server status from prefix command", { statusMessage });
+        logger.Info("Got server status from prefix command", statusMessage);
         thinking.edit("`" + statusMessage + "`");
         break;
       }

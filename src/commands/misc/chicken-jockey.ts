@@ -29,41 +29,43 @@ export default function chickenJockey(): Command {
       client: Client,
       interaction: ChatInputCommandInteraction,
     ) => {
-      await interaction.reply("JOCKEY DE GALINHA 🐔🐔💯🗣️🗣️💯🔥🙏🗣️🙏");
+      await interaction.deferReply();
 
       const voiceChannel = (interaction.member as GuildMember).voice
         .channel as VoiceChannel;
 
-      if (!voiceChannel) return;
+      if (voiceChannel) {
+        try {
+          logger.Info("Trying to join voice channel");
+          const connection = joinVoiceChannel({
+            channelId: voiceChannel.id,
+            guildId: voiceChannel.guild.id,
+            adapterCreator: voiceChannel.guild.voiceAdapterCreator,
+          });
 
-      try {
-        logger.Info("Trying to join voice channel");
-        const connection = joinVoiceChannel({
-          channelId: voiceChannel.id,
-          guildId: voiceChannel.guild.id,
-          adapterCreator: voiceChannel.guild.voiceAdapterCreator,
-        });
+          const player = createAudioPlayer();
+          const resource = createAudioResource(
+            path.join(__dirname, "../../assets/jockey_de_galinha-2.mp3"),
+          );
 
-        const player = createAudioPlayer();
-        const resource = createAudioResource(
-          path.join(__dirname, "../../assets/jockey_de_galinha-2.mp3"),
-        );
+          logger.Info("Trying to play CHICKEN JOCKEY audio");
 
-        logger.Info("Trying to play CHICKEN JOCKEY audio");
+          connection.subscribe(player);
+          player.play(resource);
 
-        connection.subscribe(player);
-        player.play(resource);
+          await entersState(connection, VoiceConnectionStatus.Ready, 20e3);
 
-        await entersState(connection, VoiceConnectionStatus.Ready, 20e3);
-
-        player.on(AudioPlayerStatus.Idle, async () => {
-          connection.disconnect();
-          logger.Info("Disconnected from voice channel");
-        });
-      } catch (error) {
-        logger.Error(error);
-        await interaction.editReply("Failed to play audio");
+          player.on(AudioPlayerStatus.Idle, async () => {
+            connection.disconnect();
+            logger.Info("Disconnected from voice channel");
+          });
+        } catch (error) {
+          logger.Error(error);
+          await interaction.editReply("Failed to play audio");
+        }
       }
+
+      await interaction.followUp("JOCKEY DE GALINHA 🐔🐔💯🗣️🗣️💯🔥🙏🗣️🙏");
     },
   };
 }

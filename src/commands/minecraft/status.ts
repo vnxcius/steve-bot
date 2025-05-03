@@ -14,17 +14,17 @@ export default function status(): Command {
     ) => {
       await interaction.deferReply();
       const { statusMessage } = await getCurrentServerStatus();
-      logger.Info("Got server status", { statusMessage });
+      logger.Info("Got server status", statusMessage);
 
-      if (!status) {
+      if (!statusMessage) {
         logger.Error("Failed to get server status from slash command");
-        interaction.editReply({
+        interaction.followUp({
           content: `Falha ao verificar status.`,
         });
         return;
       }
 
-      interaction.editReply({
+      interaction.followUp({
         content: "`" + statusMessage + "`",
       });
     },

@@ -4,6 +4,7 @@ import { Client } from "discord.js";
 import { EventSource } from "eventsource";
 
 let retryCount = 0;
+let firstStart = true;
 
 export default function sseConnection(client: Client) {
   const accessToken = process.env.ACCESS_TOKEN;
@@ -24,7 +25,9 @@ export default function sseConnection(client: Client) {
     try {
       const data = JSON.parse(event.data);
       logger.Info(`Updated server status to: ${data.status}`);
-      updateStatus(client, data.status);
+      updateStatus(client, data.status, firstStart);
+
+      if (firstStart) firstStart = false;
     } catch (error) {
       logger.Error("Failed to parse SSE message:", {
         raw: event.data,

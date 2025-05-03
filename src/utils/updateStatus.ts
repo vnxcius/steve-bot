@@ -3,7 +3,8 @@ import getStatusEmoji from "./getEmoji.js";
 import getCurrentTimeFormatted from "./getCurrentTimeFormatted.js";
 import { ServerStatus } from "../types";
 
-export default function updateStatus(client: Client, status: ServerStatus) {
+export default function updateStatus(client: Client, status: ServerStatus, firstStart: boolean) {
+  if (firstStart) return;
   const channelId = process.env.STATUS_CHANNEL_ID;
   if (!channelId) return;
 
