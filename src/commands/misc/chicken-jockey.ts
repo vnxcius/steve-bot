@@ -29,13 +29,13 @@ export default function chickenJockey(): Command {
       client: Client,
       interaction: ChatInputCommandInteraction,
     ) => {
-      await interaction.deferReply();
+      try {
+        await interaction.deferReply();
 
-      const voiceChannel = (interaction.member as GuildMember).voice
-        .channel as VoiceChannel;
+        const voiceChannel = (interaction.member as GuildMember).voice
+          .channel as VoiceChannel;
 
-      if (voiceChannel) {
-        try {
+        if (voiceChannel) {
           logger.Info("Trying to join voice channel");
           const connection = joinVoiceChannel({
             channelId: voiceChannel.id,
@@ -59,13 +59,13 @@ export default function chickenJockey(): Command {
             connection.disconnect();
             logger.Info("Disconnected from voice channel");
           });
-        } catch (error) {
-          logger.Error(error);
-          await interaction.editReply("Failed to play audio");
         }
-      }
 
-      await interaction.followUp("JOCKEY DE GALINHA 🐔🐔💯🗣️🗣️💯🔥🙏🗣️🙏");
+        await interaction.followUp("JOCKEY DE GALINHA 🐔🐔💯🗣️🗣️💯🔥🙏🗣️🙏");
+      } catch (error) {
+        logger.Error(error);
+        await interaction.editReply("Failed to play audio");
+      }
     },
   };
 }
