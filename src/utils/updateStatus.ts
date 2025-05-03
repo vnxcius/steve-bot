@@ -14,6 +14,5 @@ export default function updateStatus(client: Client, status: ServerStatus) {
   const time = getCurrentTimeFormatted();
   const message = `${time} STATUS DO SERVIDOR: ${status.toUpperCase()} ${emoji}`;
 
-  console.log(emoji);
   channel.send("`" + message + "`");
 }

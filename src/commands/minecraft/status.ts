@@ -1,6 +1,5 @@
 import { Client, ChatInputCommandInteraction } from "discord.js";
-import { Command, ServerStatus } from "@/types";
-import { request } from "undici";
+import { Command } from "@/types";
 import getCurrentServerStatus from "@/utils/getCurrentStatus";
 
 export default function status(): Command {

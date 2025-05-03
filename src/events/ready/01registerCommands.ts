@@ -4,6 +4,7 @@ import getLocalCommands from "@/utils/getLocalCommands";
 import getApplicationCommands from "@/utils/getApplicationCommands";
 import areCommandsDifferent from "@/utils/areCommandsDifferent";
 import deleteAllCommands from "@/utils/deleteAllCommands";
+import logger from "@/utils/logger";
 
 export default async function registerCommands(client: Client) {
   await deleteAllCommands();
@@ -23,7 +24,7 @@ export default async function registerCommands(client: Client) {
       if (existingCommand) {
         if (command.deleted) {
           await applicationCommands.delete(existingCommand.id);
-          console.log(`🗑️ Deleted command ${name}`);
+          logger.Info(`Deleted command ${name}`);
           return;
         }
 
@@ -32,11 +33,11 @@ export default async function registerCommands(client: Client) {
             description,
             options,
           });
-          console.log(`🔄️ Updated command ${name}`);
+          logger.Info(`Updated command ${name}`);
         }
       } else {
         if (command.deleted) {
-          console.log(`Command ${name} is deleted, skipping...`);
+          logger.Info(`Command ${name} is deleted, skipping...`);
           continue;
         }
 
@@ -45,10 +46,10 @@ export default async function registerCommands(client: Client) {
           description,
           options,
         });
-        console.log(`Created command ${name}`);
+        logger.Info(`Created command ${name}`);
       }
     }
   } catch (error) {
-    console.log("Error: ", error);
+    logger.Error(`Error registering commands: ${error}`);
   }
 }

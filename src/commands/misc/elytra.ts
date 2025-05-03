@@ -15,6 +15,7 @@ import {
 } from "@discordjs/voice";
 import { fileURLToPath } from "url";
 import * as path from "path";
+import logger from "@/utils/logger";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,7 +57,7 @@ export default function elytra(): Command {
           connection.disconnect();
         });
       } catch (error) {
-        console.log(error);
+        logger.Error(error);
         await interaction.editReply("Failed to play audio");
       }
     },

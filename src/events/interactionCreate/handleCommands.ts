@@ -1,11 +1,7 @@
-import {
-  ButtonInteraction,
-  Client,
-  Interaction,
-  MessageFlags,
-} from "discord.js";
+import { Client, Interaction, MessageFlags } from "discord.js";
 import getLocalCommands from "@/utils/getLocalCommands";
 import "dotenv/config";
+import logger from "@/utils/logger";
 
 export default async function handleCommands(
   client: Client,
@@ -56,7 +52,7 @@ export default async function handleCommands(
 
       command.callback(client, interaction);
     } catch (error) {
-      console.log("Error running command: ", error);
+      logger.Error(`Error running command: ${error}`);
     }
   }
 

@@ -1,5 +1,6 @@
 import { REST, Routes } from "discord.js";
 import "dotenv/config";
+import logger from "./logger";
 
 export default async function deleteAllCommands() {
   const token = process.env.BOT_TOKEN;
@@ -19,13 +20,13 @@ export default async function deleteAllCommands() {
     await rest
       .put(Routes.applicationCommands(clientId), { body: [] })
       .then(() =>
-        console.log("Successfully deleted all application commands."),
+        logger.Info("Successfully deleted all application commands."),
       );
 
     await rest
       .put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
-      .then(() => console.log("Successfully deleted all guild commands."));
+      .then(() => logger.Info("Successfully deleted all guild commands."));
   } catch (error) {
-    console.log("Error deleting commands: ", error);
+    logger.Error(`Failed to delete commands: ${error}`);
   }
 }
