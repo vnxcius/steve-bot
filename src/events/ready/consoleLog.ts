@@ -1,4 +1,4 @@
-import logger from "@/utils/logger";
+import logger from "../../utils/logger.js";
 import { Client } from "discord.js";
 
 export default function consoleLog(client: Client) {

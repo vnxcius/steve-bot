@@ -1,4 +1,4 @@
-import getCurrentServerStatus from "@/utils/getCurrentStatus";
+import getCurrentServerStatus from "../../utils/getCurrentServerStatus.js";
 import { Client, Message, TextChannel } from "discord.js";
 
 const prefix = "!";

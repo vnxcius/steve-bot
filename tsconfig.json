@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
+    "sourceMap": false,
     "moduleResolution": "node",
     "strict": true,
     "noImplicitAny": true,
@@ -11,12 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "outDir": "dist",
     "forceConsistentCasingInFileNames": true,
-    "allowJs": false,
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"],
-    }
-    // "declaration": true
+    "allowJs": false
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

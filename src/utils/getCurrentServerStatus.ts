@@ -1,7 +1,7 @@
-import { ServerStatus } from "@/types";
+import { ServerStatus } from "../types";
 import { request } from "undici";
-import getStatusEmoji from "@/utils/getEmoji";
-import getCurrentTimeFormatted from "@/utils/getCurrentTimeFormatted";
+import getStatusEmoji from "./getEmoji.js";
+import getCurrentTimeFormatted from "./getCurrentTimeFormatted.js";
 
 interface StatusResponse {
   statusMessage: string;

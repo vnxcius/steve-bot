@@ -4,7 +4,7 @@ import {
   GuildMember,
   VoiceChannel,
 } from "discord.js";
-import { Command } from "@/types";
+import { Command } from "../../types";
 import {
   AudioPlayerStatus,
   createAudioPlayer,
@@ -15,7 +15,7 @@ import {
 } from "@discordjs/voice";
 import { fileURLToPath } from "url";
 import * as path from "path";
-import logger from "@/utils/logger";
+import logger from "../../utils/logger.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

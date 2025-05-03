@@ -1,6 +1,6 @@
 import { REST, Routes } from "discord.js";
 import "dotenv/config";
-import logger from "./logger";
+import logger from "./logger.js";
 
 export default async function deleteAllCommands() {
   const token = process.env.BOT_TOKEN;

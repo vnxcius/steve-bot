@@ -4,7 +4,7 @@ import {
   Client,
   MessageFlags,
 } from "discord.js";
-import { Command } from "@/types";
+import { Command } from "../../types";
 import { request } from "undici";
 
 export default function server(): Command {

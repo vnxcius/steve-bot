@@ -1,8 +1,8 @@
 import type { Client } from "discord.js";
-import getFiles from "@/utils/getFiles";
+import getFiles from "../utils/getFiles.js";
 import * as path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
-import logger from "@/utils/logger";
+import logger from "../utils/logger.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

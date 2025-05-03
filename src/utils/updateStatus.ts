@@ -1,7 +1,7 @@
 import { Client, TextChannel } from "discord.js";
-import getStatusEmoji from "./getEmoji";
-import getCurrentTimeFormatted from "./getCurrentTimeFormatted";
-import { ServerStatus } from "@/types";
+import getStatusEmoji from "./getEmoji.js";
+import getCurrentTimeFormatted from "./getCurrentTimeFormatted.js";
+import { ServerStatus } from "../types";
 
 export default function updateStatus(client: Client, status: ServerStatus) {
   const channelId = process.env.STATUS_CHANNEL_ID;

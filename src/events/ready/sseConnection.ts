@@ -1,5 +1,5 @@
-import logger from "@/utils/logger";
-import updateStatus from "@/utils/updateStatus";
+import logger from "../../utils/logger.js";
+import updateStatus from "../../utils/updateStatus.js";
 import { Client } from "discord.js";
 import { EventSource } from "eventsource";
 

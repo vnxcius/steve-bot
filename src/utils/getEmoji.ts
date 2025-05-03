@@ -1,4 +1,4 @@
-import { ServerStatus } from "@/types";
+import { ServerStatus } from "../types";
 
 export default function getStatusEmoji(status: ServerStatus) {
   switch (status) {

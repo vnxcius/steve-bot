@@ -12,10 +12,10 @@ import {
   joinVoiceChannel,
   VoiceConnectionStatus,
 } from "@discordjs/voice";
-import { Command } from "@/types";
+import { Command } from "../../types";
 import * as path from "path";
 import { fileURLToPath } from "url";
-import logger from "@/utils/logger";
+import logger from "../../utils/logger.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
