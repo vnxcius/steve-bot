@@ -2,6 +2,7 @@ import * as path from "path";
 import getFiles from "./getFiles.js";
 import { fileURLToPath, pathToFileURL } from "url";
 import { Command } from "../types";
+import logger from "./logger.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,5 +28,7 @@ export default async function getLocalCommands(
       localCommands.push(command);
     }
   }
+
+  logger.Debug("Got local commands", localCommands);
   return localCommands;
 }

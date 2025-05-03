@@ -37,6 +37,7 @@ export default function theNether(): Command {
       if (!voiceChannel) return;
 
       try {
+        logger.Info("Trying to join voice channel");
         const connection = joinVoiceChannel({
           channelId: voiceChannel.id,
           guildId: voiceChannel.guild.id,
@@ -48,6 +49,8 @@ export default function theNether(): Command {
           path.join(__dirname, "../../assets/o_nether-2.mp3"),
         );
 
+        logger.Info("Trying to play THE NETHER audio");
+
         connection.subscribe(player);
         player.play(resource);
 
@@ -55,6 +58,7 @@ export default function theNether(): Command {
 
         player.on(AudioPlayerStatus.Idle, async () => {
           connection.disconnect();
+          logger.Info("Disconnected from voice channel");
         });
       } catch (error) {
         logger.Error(error);

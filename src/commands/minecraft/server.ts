@@ -6,6 +6,7 @@ import {
 } from "discord.js";
 import { Command } from "../../types";
 import { request } from "undici";
+import logger from "../../utils/logger.js";
 
 export default function server(): Command {
   return {
@@ -51,6 +52,7 @@ export default function server(): Command {
             Authorization: `Bearer ${accessToken}`,
           },
         });
+        logger.Info("Tried to start the server")
       }
 
       if (interaction.options.getSubcommand() === "stop") {
@@ -60,6 +62,7 @@ export default function server(): Command {
             Authorization: `Bearer ${accessToken}`,
           },
         });
+        logger.Info("Tried to stop the server")
       }
 
       if (interaction.options.getSubcommand() === "restart") {
@@ -69,6 +72,7 @@ export default function server(): Command {
             Authorization: `Bearer ${accessToken}`,
           },
         });
+        logger.Info("Tried to restart the server")
       }
 
       if (!response) {
@@ -78,7 +82,7 @@ export default function server(): Command {
       const data: any = await response.body.json();
 
       const message = `${data.message}`;
-      interaction.editReply({
+      interaction.followUp({
         content: "`" + message + " ✅`",
       });
     },

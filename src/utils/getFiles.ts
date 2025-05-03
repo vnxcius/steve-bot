@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import logger from "./logger.js";
 
 export default (dir: string, foldersOnly: boolean = false) => {
   let fileNames = [];
@@ -16,5 +17,6 @@ export default (dir: string, foldersOnly: boolean = false) => {
     }
   }
 
+  logger.Debug("Got file names", fileNames);
   return fileNames;
 };

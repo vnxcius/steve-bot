@@ -23,7 +23,7 @@ export default function sseConnection(client: Client) {
   eventSource.onmessage = (event) => {
     try {
       const data = JSON.parse(event.data);
-      logger.Info(`SSE Connection: server is ${data.status}`);
+      logger.Info(`Updated server status to: ${data.status}`);
       updateStatus(client, data.status);
     } catch (error) {
       logger.Error("Failed to parse SSE message:", {

@@ -1,6 +1,7 @@
 import { Client, ChatInputCommandInteraction } from "discord.js";
 import { Command } from "../../types";
 import getCurrentServerStatus from "../../utils/getCurrentServerStatus.js";
+import logger from "../../utils/logger.js";
 
 export default function status(): Command {
   return {
@@ -12,9 +13,11 @@ export default function status(): Command {
       interaction: ChatInputCommandInteraction,
     ) => {
       await interaction.deferReply();
-      const status = await getCurrentServerStatus();
+      const { statusMessage } = await getCurrentServerStatus();
+      logger.Info("Got server status", { statusMessage });
 
       if (!status) {
+        logger.Error("Failed to get server status from slash command");
         interaction.editReply({
           content: `Falha ao verificar status.`,
         });
@@ -22,7 +25,7 @@ export default function status(): Command {
       }
 
       interaction.editReply({
-        content: "`" + status + "`",
+        content: "`" + statusMessage + "`",
       });
     },
   };
