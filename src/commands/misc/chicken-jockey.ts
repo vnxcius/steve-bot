@@ -29,8 +29,8 @@ export default function chickenJockey(): Command {
       client: Client,
       interaction: ChatInputCommandInteraction,
     ) => {
+      await interaction.deferReply();
       try {
-        await interaction.deferReply();
 
         const voiceChannel = (interaction.member as GuildMember).voice
           .channel as VoiceChannel;

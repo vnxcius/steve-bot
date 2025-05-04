@@ -17,9 +17,9 @@ export default function ping(): Command {
       client: Client,
       interaction: ChatInputCommandInteraction,
     ) => {
+      await interaction.deferReply();
       try {
         logger.Info("Pinging slash command received");
-        await interaction.deferReply();
 
         const button = new ButtonBuilder()
           .setCustomId("delete_message")
