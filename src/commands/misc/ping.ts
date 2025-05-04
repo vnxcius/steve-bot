@@ -6,7 +6,7 @@ import {
   ChatInputCommandInteraction,
 } from "discord.js";
 import { Command } from "../../types";
-import logger from "../../utils/logger";
+import logger from "../../utils/logger.js";
 
 export default function ping(): Command {
   return {
