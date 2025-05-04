@@ -32,7 +32,7 @@ jobs:
           CLOUDFLARE_CLIENT_SECRET: ${{ secrets.CLOUDFLARE_CLIENT_SECRET }}
         run: |
           cloudflared access tcp \
-            --hostname ${{ secrets.SERVER_HOST }} \
+            --hostname ${{ secrets.SERVER_HOST }}:22 \
             --id $CLOUDFLARE_CLIENT_ID \
             --secret $CLOUDFLARE_CLIENT_SECRET \
             --url localhost:2222 &
