@@ -22,7 +22,9 @@ jobs:
       - name: Set up SSH key
         env:
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          TEST: ${{ secrets.TEST }}
         run: |
+          echo "$TEST"
           mkdir -p ~/.ssh
           echo "$SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
@@ -30,10 +32,12 @@ jobs:
 
       - name: Start Cloudflare Tunnel in background
         env:
+          TEST: ${{ secrets.TEST }}
           HOSTNAME: ${{ secrets.SERVER_HOST }}
           CLOUDFLARE_CLIENT_ID: ${{ secrets.CLOUDFLARE_CLIENT_ID }}
           CLOUDFLARE_CLIENT_SECRET: ${{ secrets.CLOUDFLARE_CLIENT_SECRET }}
         run: |
+          echo "$TEST"
           cloudflared access tcp \
             --hostname $HOSTNAME \
             --id $CLOUDFLARE_CLIENT_ID \
@@ -49,6 +53,7 @@ jobs:
 
       - name: SSH and deploy
         env:
+          TEST: ${{ secrets.TEST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
           ssh -p 2222 -o StrictHostKeyChecking=no $SERVER_USER@localhost << 'EOF'
