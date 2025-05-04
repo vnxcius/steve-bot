@@ -6,11 +6,12 @@ import {
 } from "discord.js";
 import { Command } from "../../types";
 import getLocalCommands from "../../utils/getLocalCommands.js";
+import logger from "../../utils/logger.js";
 
 export default function help(): Command {
   return {
     name: "help",
-    description: "Lists all available commands",
+    description: "Listar comandos disponíveis",
     deleted: false,
     callback: async (
       client: Client,
@@ -21,7 +22,7 @@ export default function help(): Command {
         const embed = new EmbedBuilder()
           .setTitle("Comandos disponíveis")
           .setDescription(
-            "Use /help [comando] para obter ajuda sobre um comando.",
+            "Use /help [comando] para obter ajuda sobre um comando. [EM BREVE]",
           )
           .setColor(0x52a535);
 
@@ -37,7 +38,7 @@ export default function help(): Command {
           flags: MessageFlags.Ephemeral,
         });
       } catch (error) {
-        console.error("Error in help command:", error);
+        logger.Error("Error in help command:", error);
         await interaction.reply({
           content: "An error occurred while listing commands.",
           flags: MessageFlags.Ephemeral,

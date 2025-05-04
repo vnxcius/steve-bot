@@ -64,7 +64,7 @@ export default function chickenJockey(): Command {
         await interaction.followUp("JOCKEY DE GALINHA 🐔🐔💯🗣️🗣️💯🔥🙏🗣️🙏");
       } catch (error) {
         logger.Error(error);
-        await interaction.editReply("Failed to play audio");
+        await interaction.followUp("Failed to play audio");
       }
     },
   };
