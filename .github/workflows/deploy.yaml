@@ -28,7 +28,11 @@ jobs:
 
       - name: Start Cloudflare Tunnel in background
         run: |
-          cloudflared access tcp --hostname ${{ secrets.SERVER_HOST }} --id ${{ secrets.CLOUDFLARE_CLIENT_ID }} --secret ${{ secrets.CLOUDFLARE_CLIENT_SECRET }} --url localhost:2222 &
+          cloudflared access tcp \
+            --hostname ${{ secrets.SERVER_HOSST }} \
+            --id ${{ secrets.CLOUDFLARE_CLIENT_ID }} \
+            --secret ${{ secrets.CLOUDFLARE_CLIENT_SECRET }} \
+            --url localhost:2222 &
 
           # Wait for tunnel to be ready
           for i in {1..10}; do
