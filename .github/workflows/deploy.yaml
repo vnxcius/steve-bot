@@ -19,19 +19,37 @@ jobs:
           chmod +x cloudflared
           sudo mv cloudflared /usr/local/bin/cloudflared
 
-      - name: Setup SSH key
+      - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          touch ~/.ssh/known_hosts
+          ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
 
-      - name: Connect via Cloudflare Tunnel and deploy
+      - name: Start Cloudflare Tunnel in background
         env:
-          CF_ACCESS_CLIENT_ID: ${{ secrets.CLOUDFLARE_CLIENT_ID }}
-          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CLOUDFLARE_CLIENT_SECRET }}
+          CLOUDFLARE_CLIENT_ID: ${{ secrets.CLOUDFLARE_CLIENT_ID }}
+          CLOUDFLARE_CLIENT_SECRET: ${{ secrets.CLOUDFLARE_CLIENT_SECRET }}
         run: |
-          cloudflared access ssh --hostname ${{ secrets.SERVER_HOST }} \
-            --id "$CF_ACCESS_CLIENT_ID" \
-            --secret "$CF_ACCESS_CLIENT_SECRET" \
-            --command "cd /opt/steve-bot && git pull origin main && npm install && npm run build && systemctl restart steve-bot"
+          cloudflared access tcp \
+            --hostname ${{ secrets.SERVER_HOST }} \
+            --id $CLOUDFLARE_CLIENT_ID \
+            --secret $CLOUDFLARE_CLIENT_SECRET \
+            --url localhost:2222 &
+
+          # Wait for tunnel to be ready
+          for i in {1..10}; do
+            nc -z localhost 2222 && break
+            echo "Waiting for tunnel..."
+            sleep 3
+          done
+
+      - name: SSH and deploy
+        run: |
+          ssh -p 2222 -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@localhost << 'EOF'
+            cd /opt/steve-bot
+            git pull origin main
+            npm install
+            npm run build
+            systemctl restart steve-bot
+          EOF
