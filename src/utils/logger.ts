@@ -3,12 +3,14 @@ import dayjs from "dayjs";
 import fs from "fs-extra";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
+import getWebhookClient from "../events/ready/webhookClient";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const appName = "stevebot";
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = process.env.ENVIRONMENT === "development";
+const webhookClient = getWebhookClient();
 
 const currentDateFolder = dayjs().tz("America/Sao_Paulo").format("YYYYMMDD"); // Folder: e.g., "20250503"
 
@@ -69,6 +71,7 @@ const logger = {
     const line = `${getTimestamp()} ${chalk.gray("INFO")} ${message}`;
     console.log(line);
     writeToFile("INFO", message);
+    if (webhookClient) webhookClient.send(message);
   },
 
   Warn(...args: unknown[]) {
@@ -76,6 +79,7 @@ const logger = {
     const line = `${getTimestamp()} ${chalk.yellow("WARN")} ${message}`;
     console.warn(line);
     writeToFile("WARN", message);
+    if (webhookClient) webhookClient.send(message);
   },
 
   Error(...args: unknown[]) {
@@ -83,6 +87,7 @@ const logger = {
     const line = `${getTimestamp()} ${chalk.red("ERROR")} ${message}`;
     console.error(line);
     writeToFile("ERROR", message);
+    if (webhookClient) webhookClient.send(message);
   },
 
   Debug(...args: unknown[]) {
