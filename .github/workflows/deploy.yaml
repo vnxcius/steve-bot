@@ -20,19 +20,22 @@ jobs:
           sudo mv cloudflared /usr/local/bin/cloudflared
 
       - name: Set up SSH key
+        env:
+          SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
 
       - name: Start Cloudflare Tunnel in background
         env:
+          HOSTNAME: ${{ secrets.SERVER_HOST }}
           CLOUDFLARE_CLIENT_ID: ${{ secrets.CLOUDFLARE_CLIENT_ID }}
           CLOUDFLARE_CLIENT_SECRET: ${{ secrets.CLOUDFLARE_CLIENT_SECRET }}
         run: |
           cloudflared access tcp \
-            --hostname ${{ secrets.SERVER_HOST }} \
+            --hostname $HOSTNAME \
             --id $CLOUDFLARE_CLIENT_ID \
             --secret $CLOUDFLARE_CLIENT_SECRET \
             --url localhost:2222 &
@@ -45,8 +48,10 @@ jobs:
           done
 
       - name: SSH and deploy
+        env:
+          SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
-          ssh -p 2222 -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@localhost << 'EOF'
+          ssh -p 2222 -o StrictHostKeyChecking=no $SERVER_USER@localhost << 'EOF'
             cd /opt/steve-bot
             git pull origin main
             npm install
