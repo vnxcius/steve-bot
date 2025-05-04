@@ -27,4 +27,4 @@ jobs:
 
       - name: Restart bot service
         run: |
-          sudo systemctl restart discord-bot
+          sudo /bin/systemctl restart steve-bot
