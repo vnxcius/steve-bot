@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import fs from "fs-extra";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
-import getWebhookClient from "../events/ready/webhookClient";
+import getWebhookClient from "../events/ready/webhookClient.js";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
