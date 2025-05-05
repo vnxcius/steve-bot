@@ -51,7 +51,6 @@ export default function serverInfo(): Command {
               (player) => player.name_clean,
             );
             embed
-              .setThumbnail(res.icon!)
               .setFooter({ text: res.motd.clean })
               .addFields({
                 name: "Jogadores",
