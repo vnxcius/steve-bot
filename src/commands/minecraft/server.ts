@@ -12,22 +12,21 @@ export default function server(): Command {
   return {
     name: "server",
     description: "Controle o servidor de minecraft",
-    deleted: false,
     devOnly: true,
     options: [
       {
         name: "start",
-        description: "Start the server",
+        description: "Iniciar o servidor",
         type: ApplicationCommandOptionType.Subcommand,
       },
       {
         name: "stop",
-        description: "Stop the server",
+        description: "Parar o servidor",
         type: ApplicationCommandOptionType.Subcommand,
       },
       {
         name: "restart",
-        description: "Restart the server",
+        description: "Reiniciar o servidor",
         type: ApplicationCommandOptionType.Subcommand,
       },
     ],
@@ -38,45 +37,46 @@ export default function server(): Command {
       await interaction.deferReply({ flags: MessageFlags.Ephemeral });
       const accessToken = process.env.ACCESS_TOKEN;
       const apiURL = process.env.API_URL;
-
-      if (!accessToken || !apiURL) {
-        throw new Error("no access token or api url found");
-      }
-
       let response;
 
-      if (interaction.options.getSubcommand() === "start") {
+      if (!accessToken || !apiURL) {
+        logger.Error("No access token or API URL environment variable found");
+        return;
+      }
+
+      const command = interaction.options.getSubcommand();
+      logger.Info("Trying to " + command + " the server");
+
+      if (command === "start") {
         response = await request(`${apiURL}/api/v2/server/start`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        logger.Info("Tried to start the server")
       }
 
-      if (interaction.options.getSubcommand() === "stop") {
+      if (command === "stop") {
         response = await request(`${apiURL}/api/v2/server/stop`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        logger.Info("Tried to stop the server")
       }
 
-      if (interaction.options.getSubcommand() === "restart") {
+      if (command === "restart") {
         response = await request(`${apiURL}/api/v2/server/restart`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        logger.Info("Tried to restart the server")
       }
 
-      if (!response) {
-        throw new Error("no valid response from server");
+      if (response?.statusCode !== 200) {
+        logger.Error("Failed to " + command + " the server");
+        return;
       }
 
       const data: any = await response.body.json();

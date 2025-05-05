@@ -12,7 +12,6 @@ export default function help(): Command {
   return {
     name: "help",
     description: "Listar comandos disponíveis",
-    deleted: false,
     callback: async (
       client: Client,
       interaction: ChatInputCommandInteraction,
