@@ -24,7 +24,6 @@ export default function flintAndSteel(): Command {
   return {
     name: "pedra-e-aco",
     description: "PEDRA E AÇO!",
-    deleted: false,
     callback: async (
       client: Client,
       interaction: ChatInputCommandInteraction,

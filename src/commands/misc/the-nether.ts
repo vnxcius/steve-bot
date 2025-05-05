@@ -24,7 +24,6 @@ export default function theNether(): Command {
   return {
     name: "o-nether",
     description: "O NETHER!",
-    deleted: false,
     callback: async (
       client: Client,
       interaction: ChatInputCommandInteraction,

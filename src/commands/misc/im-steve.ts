@@ -24,7 +24,6 @@ export default function chickenJockey(): Command {
   return {
     name: "eu-sou-steve",
     description: "EEEU.... SOU STEVE!",
-    deleted: false,
     callback: async (
       client: Client,
       interaction: ChatInputCommandInteraction,

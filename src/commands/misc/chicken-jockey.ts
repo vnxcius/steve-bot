@@ -24,7 +24,6 @@ export default function chickenJockey(): Command {
   return {
     name: "jockey-de-galinha",
     description: "JOCKEY DE GALINHA!",
-    deleted: false,
     callback: async (
       client: Client,
       interaction: ChatInputCommandInteraction,

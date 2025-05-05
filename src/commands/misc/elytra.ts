@@ -24,7 +24,6 @@ export default function elytra(): Command {
   return {
     name: "elitros",
     description: "QUE TAL ESSES ÉLITROS?!",
-    deleted: false,
     callback: async (
       client: Client,
       interaction: ChatInputCommandInteraction,

@@ -12,7 +12,6 @@ export default function ping(): Command {
   return {
     name: "ping",
     description: "Replies with pong!",
-    deleted: false,
     callback: async (
       client: Client,
       interaction: ChatInputCommandInteraction,
