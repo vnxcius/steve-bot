@@ -46,6 +46,7 @@ export default function sseConnection(client: Client) {
     const delay = Math.min(baseDelay * Math.pow(2, retryCount), maxDelay);
     logger.Info(`Reconnecting in ${delay / 1000}s...`);
 
+    firstStart = true;
     setTimeout(() => {
       retryCount++;
       sseConnection(client);
