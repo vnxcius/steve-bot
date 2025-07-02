@@ -12,7 +12,7 @@ export default async function registerCommands(client: Client) {
     const localCommands = await getLocalCommands();
     const applicationCommands = await getApplicationCommands(
       client,
-      "1369027786924232818",
+      process.env.TEST_GUILD_ID || "",
     );
 
     for (const command of localCommands) {
