@@ -4,12 +4,7 @@ import updateStatus from "../../utils/updateStatus.js";
 import { Client } from "discord.js";
 import WebSocket from "ws";
 
-type WSMsg =
-  | { type: "status_update"; payload: { status: ServerStatus } }
-  | { type: "modlist_update"; payload: unknown }
-  | { type: "log_snapshot"; payload: unknown }
-  | { type: "log_append"; payload: unknown }
-  | { type: "modlist_changelog_update"; payload: unknown };
+type WSMsg = { type: "status_update"; payload: { status: ServerStatus } };
 
 let retryCount = 0;
 let firstStart = true;

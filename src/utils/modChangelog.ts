@@ -1,11 +1,10 @@
 import { Client, TextChannel } from "discord.js";
-import getEmoji from "./getEmoji.js";
 import getCurrentTimeFormatted from "./getCurrentTimeFormatted.js";
 import { ServerStatus } from "../types";
 
-export default function updateStatus(
+export default function modChangelog(
   client: Client,
-  status: ServerStatus,
+  payload: { type: string; name: string }[],
   firstStart: boolean,
 ) {
   if (firstStart) return;
@@ -15,9 +14,16 @@ export default function updateStatus(
   const channel = client.channels.cache.get(channelId) as TextChannel;
   if (!channel) return;
 
-  const emoji = getEmoji(status);
   const time = getCurrentTimeFormatted();
-  const message = `${time} STATUS DO SERVIDOR: ${status.toUpperCase()} ${emoji}`;
+  let message = "";
+
+  for (const change of payload) {
+    message += `${time} ${change.type} ${change.name}\n\n`;
+  }
+
+  // message = message.trim();
+
+  if (!message) return;
 
   channel.send("`" + message + "`");
 }

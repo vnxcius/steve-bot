@@ -1,6 +1,6 @@
 import { ServerStatus } from "../types";
 
-export default function getStatusEmoji(status: ServerStatus) {
+export default function getEmoji(status: ServerStatus) {
   switch (status) {
     case "online":
       return "🟢";
