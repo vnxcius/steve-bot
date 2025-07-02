@@ -9,9 +9,13 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Delete old compiled code
+        run: |
+          cd /opt/steve-bot
+          rm -rf dist
       - name: Pull latest code
         run: |
-          cd /opt/steve-bot  # change to your repo path
+          cd /opt/steve-bot
           git fetch origin
           git reset --hard origin/main
 
