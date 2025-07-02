@@ -21,4 +21,5 @@ export type ServerStatus =
   | "offline"
   | "starting"
   | "stopping"
-  | "restarting";
+  | "restarting"
+  | "error";

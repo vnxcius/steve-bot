@@ -3,14 +3,13 @@ import dayjs from "dayjs";
 import fs from "fs-extra";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
-import getWebhookClient from "../events/ready/webhookClient.js";
+import * as path from "path";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const appName = "stevebot";
-const isDevelopment = process.env.ENVIRONMENT === "development";
-const webhookClient = getWebhookClient();
+const isDevelopment = process.env.DEBUG === "true";
 
 const currentDateFolder = dayjs().tz("America/Sao_Paulo").format("YYYYMMDD"); // Folder: e.g., "20250503"
 
@@ -31,7 +30,13 @@ function getTimestamp() {
 
 function writeToFile(level: string, message: string) {
   const logMessage = `${getTimestamp()} ${level.toUpperCase()} ${message}\n`;
-  fs.appendFileSync(logFile, logMessage);
+  try {
+    fs.ensureDirSync(path.dirname(logFile));
+    fs.appendFileSync(logFile, logMessage);
+  } catch (err) {
+    console.error("Failed to write log to file:", err);
+    console.error("Original log message:", logMessage);
+  }
 }
 
 function formatErrorMessage(error: unknown): string {
@@ -71,7 +76,6 @@ const logger = {
     const line = `${getTimestamp()} ${chalk.gray("INFO")} ${message}`;
     console.log(line);
     writeToFile("INFO", message);
-    if (webhookClient) webhookClient.send(message);
   },
 
   Warn(...args: unknown[]) {
@@ -79,7 +83,6 @@ const logger = {
     const line = `${getTimestamp()} ${chalk.yellow("WARN")} ${message}`;
     console.warn(line);
     writeToFile("WARN", message);
-    if (webhookClient) webhookClient.send(message);
   },
 
   Error(...args: unknown[]) {
@@ -87,7 +90,6 @@ const logger = {
     const line = `${getTimestamp()} ${chalk.red("ERROR")} ${message}`;
     console.error(line);
     writeToFile("ERROR", message);
-    if (webhookClient) webhookClient.send(message);
   },
 
   Debug(...args: unknown[]) {

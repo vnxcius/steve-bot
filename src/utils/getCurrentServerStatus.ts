@@ -20,7 +20,7 @@ export default async function getCurrentServerStatus(): Promise<StatusResponse> 
   }
 
   const data: any = await response.body.json();
-  const status = data.message as ServerStatus;
+  const status = data.status as ServerStatus;
   const emoji = getStatusEmoji(status);
   const time = getCurrentTimeFormatted();
   const message = `${time} STATUS DO SERVIDOR: ${status.toUpperCase()} ${emoji}`;

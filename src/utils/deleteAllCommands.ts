@@ -5,7 +5,7 @@ import logger from "./logger.js";
 export default async function deleteAllCommands() {
   const token = process.env.BOT_TOKEN;
   const clientId = process.env.CLIENT_ID;
-  const guildId = process.env.GUILD_ID;
+  const guildId = process.env.TEST_GUILD_ID;
   const deleteCommands = process.env.DELETE_COMMANDS_ON_START;
 
   if (deleteCommands !== "true") return;

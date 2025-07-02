@@ -12,20 +12,33 @@ export default function status(): Command {
       interaction: ChatInputCommandInteraction,
     ) => {
       await interaction.deferReply();
-      const { statusMessage } = await getCurrentServerStatus();
-      logger.Info("Got server status", statusMessage);
 
-      if (!statusMessage) {
-        logger.Error("Failed to get server status from slash command");
+      try {
+        const { statusMessage, code } = await getCurrentServerStatus();
+        logger.Info("Got server status:", statusMessage);
+
+        if (statusMessage === undefined) {
+          logger.Error(
+            "Failed to get server status from slash command.",
+            "status code:",
+            code,
+          );
+          interaction.followUp({
+            content: `Falha ao verificar status.`,
+          });
+          return;
+        }
+
         interaction.followUp({
-          content: `Falha ao verificar status.`,
+          content: "`" + statusMessage + "`",
+        });
+      } catch (error) {
+        logger.Error("Failed to get server status from slash command.", error);
+        interaction.followUp({
+          content: `ERRO INTERNO. Falha ao verificar status.`,
         });
         return;
       }
-
-      interaction.followUp({
-        content: "`" + statusMessage + "`",
-      });
     },
   };
 }

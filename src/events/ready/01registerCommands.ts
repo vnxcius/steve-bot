@@ -1,10 +1,10 @@
 import { Client, ApplicationCommand } from "discord.js";
-import "dotenv/config";
 import getLocalCommands from "../../utils/getLocalCommands.js";
 import getApplicationCommands from "../../utils/getApplicationCommands.js";
 import areCommandsDifferent from "../../utils/areCommandsDifferent.js";
 import deleteAllCommands from "../../utils/deleteAllCommands.js";
 import logger from "../../utils/logger.js";
+import "dotenv/config";
 
 export default async function registerCommands(client: Client) {
   await deleteAllCommands();
@@ -12,7 +12,7 @@ export default async function registerCommands(client: Client) {
     const localCommands = await getLocalCommands();
     const applicationCommands = await getApplicationCommands(
       client,
-      "",
+      "1369027786924232818",
     );
 
     for (const command of localCommands) {
@@ -50,6 +50,6 @@ export default async function registerCommands(client: Client) {
       }
     }
   } catch (error) {
-    logger.Error(`Error registering commands: ${error}`);
+    logger.Error(`Error registering commands: ${error}`, error);
   }
 }

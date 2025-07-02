@@ -1,6 +1,15 @@
 import { Client, IntentsBitField } from "discord.js";
 import "dotenv/config";
 import eventHandler from "./handlers/eventHandler.js";
+import logger from "./utils/logger.js";
+
+process.on("uncaughtException", (err) => {
+  logger.Error("Uncaught Exception:", err);
+});
+
+process.on("unhandledRejection", (reason) => {
+  logger.Error("Unhandled Rejection:", reason);
+});
 
 const client = new Client({
   intents: [

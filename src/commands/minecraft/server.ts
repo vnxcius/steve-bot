@@ -37,7 +37,6 @@ export default function server(): Command {
       await interaction.deferReply({ flags: MessageFlags.Ephemeral });
       const accessToken = process.env.ACCESS_TOKEN;
       const apiURL = process.env.API_URL;
-      let response;
 
       if (!accessToken || !apiURL) {
         logger.Error("No access token or API URL environment variable found");
@@ -45,46 +44,60 @@ export default function server(): Command {
       }
 
       const command = interaction.options.getSubcommand();
-      logger.Info("Trying to " + command + " the server");
+      try {
+        logger.Info("Trying to " + command + " the server");
+        let response;
 
-      if (command === "start") {
-        response = await request(`${apiURL}/api/v2/server/start`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+        if (command === "start") {
+          response = await request(`${apiURL}/api/v2/signed/server/start`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+        }
+
+        if (command === "stop") {
+          response = await request(`${apiURL}/api/v2/signed/server/stop`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+        }
+
+        if (command === "restart") {
+          response = await request(`${apiURL}/api/v2/signed/server/restart`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+        }
+
+        if (response?.statusCode !== 200) {
+          logger.Error(
+            "Failed to " + command + " the server.",
+            response?.statusCode,
+          );
+          interaction.followUp({
+            content: `ERRO INTERNO. Falha ao ${command} o servidor.`,
+          });
+          return;
+        }
+
+        const data: any = await response.body.json();
+
+        const message = `${data.message}`;
+        interaction.followUp({
+          content: "`" + message + " ✅`",
+        });
+      } catch (error) {
+        logger.Error("Failed to " + command + " the server", error);
+        interaction.followUp({
+          content: `ERRO INTERNO. Falha ao ${command} o servidor.`,
         });
       }
-
-      if (command === "stop") {
-        response = await request(`${apiURL}/api/v2/server/stop`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-      }
-
-      if (command === "restart") {
-        response = await request(`${apiURL}/api/v2/server/restart`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-      }
-
-      if (response?.statusCode !== 200) {
-        logger.Error("Failed to " + command + " the server");
-        return;
-      }
-
-      const data: any = await response.body.json();
-
-      const message = `${data.message}`;
-      interaction.followUp({
-        content: "`" + message + " ✅`",
-      });
     },
   };
 }
