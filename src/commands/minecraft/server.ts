@@ -92,6 +92,10 @@ export default function server(): Command {
         interaction.followUp({
           content: "`" + message + " ✅`",
         });
+
+        setTimeout(() => {
+          interaction.deleteReply();
+        }, 3000);
       } catch (error) {
         logger.Error("Failed to " + command + " the server", error);
         interaction.followUp({
