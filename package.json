@@ -26,7 +26,7 @@
     "@discordjs/voice": "^0.18.0",
     "chalk": "^5.4.1",
     "dayjs": "^1.11.13",
-    "discord.js": "^14.19.2",
+    "discord.js": "^14.21.0",
     "dotenv": "^16.5.0",
     "eventsource": "^3.0.6",
     "ffmpeg-static": "^5.2.0",
